@@ -60,7 +60,10 @@ def faq_node(state):
     
     # Create agent on demand
     agent = create_faq_agent()
-    response = agent.invoke({"input": input_with_context})
+    response = agent.invoke({
+        "input": input_with_context,
+        "chat_history": messages[:-1]  # Pass all previous messages as chat history
+    })
     
     return {"messages": [AIMessage(content=response["output"])]}
 
@@ -78,7 +81,7 @@ def document_node(state):
     agent = create_document_agent()
     response = agent.invoke({
         "input": input_with_context,
-        "chat_history": messages[:-1]  # Pass previous messages
+        "chat_history": messages[:-1]  # Pass all previous messages as chat history
     })
     
     # Update state with new files if uploaded

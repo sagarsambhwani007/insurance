@@ -69,6 +69,9 @@ def web_comparison_node(state):
     
     # Create agent on demand
     agent = create_web_comparison_agent()
-    response = agent.invoke({"input": messages[-1].content})
+    response = agent.invoke({
+        "input": messages[-1].content,
+        "chat_history": messages[:-1]  # Pass all previous messages as chat history
+    })
     
     return {"messages": [AIMessage(content=response["output"])]}

@@ -47,6 +47,9 @@ def recommender_node(state):
     
     # Create agent on demand to avoid global state issues
     agent = create_recommender_agent()
-    response = agent.invoke({"input": input_with_profile})
+    response = agent.invoke({
+        "input": input_with_profile,
+        "chat_history": messages[:-1]  # Pass all previous messages as chat history
+    })
     
     return {"messages": [AIMessage(content=response["output"])]}
