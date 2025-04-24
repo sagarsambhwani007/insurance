@@ -1,0 +1,6 @@
+1. "I need health insurance"
+2. "I'm 35 years old"
+3. "Compare Basic and Premium plans"
+4. "Upload my medical history.pdf"
+5. "What does my policy say about pre-existing conditions?"
+6. "This was helpful!" (feedback test)
