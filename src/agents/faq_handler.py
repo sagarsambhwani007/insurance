@@ -70,6 +70,7 @@ def faq_node(state):
 def document_node(state):
     """
     Process a state through the document analysis agent.
+    Intelligently handles both uploaded documents and documents in the docs folder.
     """
     messages = state["messages"]
     uploaded_files = state.get("uploaded_files", [])
@@ -84,12 +85,19 @@ def document_node(state):
         "chat_history": messages[:-1]  # Pass all previous messages as chat history
     })
     
+    # Query the vector store for relevant information
+    # The analyze_document function will search across all available documents
+    document_analysis = analyze_document(messages[-1].content, use_uploaded=bool(uploaded_files))
+    
+    # Combine responses
+    combined_response = f"{response['output']}\n\nDocument Analysis:\n{document_analysis}"
+    
     # Update state with new files if uploaded
     if "uploaded" in response["output"].lower():
         new_files = [f for f in response["output"].split(":")[-1].split(",")]
         uploaded_files.extend(new_files)
     
     return {
-        "messages": [AIMessage(content=response["output"])],
+        "messages": [AIMessage(content=combined_response)],
         "uploaded_files": uploaded_files
     }
